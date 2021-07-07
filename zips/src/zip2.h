@@ -3,9 +3,11 @@
 
 #define zip2_H
 
-#include <iostream>
 #include <iterator>
 #include <tuple>
+
+namespace zips
+{
 
 template <typename It1, typename It2>
 class zip_iterator
@@ -74,5 +76,7 @@ private:
     T1 m_obj1;
     T2 m_obj2;
 };
+
+} // namespace zips
 
 #endif // zip2_H

@@ -2,9 +2,11 @@
 
 #define enumerate_H
 
-#include <iostream>
 #include <iterator>
 #include <tuple>
+
+namespace zips
+{
 
 // T is an iterator
 template <typename T>
@@ -133,5 +135,7 @@ private:
     T m_container;
     int m_start;
 };
+
+}
 
 #endif // enumerate_H

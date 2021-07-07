@@ -2,9 +2,10 @@
 
 #define range_H
 
-
-#include <iostream>
 #include <iterator>
+
+namespace zips
+{
 
 class range_iterator
 {
@@ -109,5 +110,6 @@ private:
     int m_step;
 };
 
+} // namespace zips
 
 #endif // range_H
