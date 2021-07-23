@@ -9,6 +9,10 @@
 namespace zips
 {
 
+namespace zip2
+
+{
+
 template <typename It1, typename It2>
 class zip_iterator
 {
@@ -76,6 +80,8 @@ private:
     T1 m_obj1;
     T2 m_obj2;
 };
+
+} // namespace zip2
 
 } // namespace zips
 
