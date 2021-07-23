@@ -8,19 +8,18 @@
 namespace zips
 {
 
-// T is an iterator
-template <typename T>
+// It is an iterator
+template <typename It>
 class enumerate_iterator
 {
 public:
     using iterator_category = std::forward_iterator_tag;
-    using value_type = std::tuple<int, typename T::value_type&>;
-    using difference_type = typename T::difference_type;
-    using reference = value_type;
-    using pointer = typename T::value_type*;
+    using value_type        = std::tuple<int, typename It::value_type&>;
+    using difference_type   = typename It::difference_type;
+    using reference         = value_type;
+    using pointer           = typename It::pointer;
 public:
-    enumerate_iterator(const T& object, int start) : m_object(object), m_num(start) {}
-    enumerate_iterator(T&& object, int start) : m_object(std::move(object)), m_num(start) {}
+    enumerate_iterator(It&& object, int start) : m_object(std::move(object)), m_num(start) {}
 
     reference operator*()
     {
@@ -50,23 +49,22 @@ public:
     }
 
 private:
-    T m_object;
+    It m_object;
     int m_num;
 };
 
-// T is an iterator
-template <typename T>
+// It is an iterator
+template <typename It>
 class const_enumerate_iterator
 {
 public:
     using iterator_category = std::forward_iterator_tag;
-    using value_type = std::tuple<int, const typename T::value_type&>;
-    using difference_type = typename T::difference_type;
-    using reference = value_type;
-    using pointer = typename T::value_type*;
+    using value_type        = std::tuple<int, const typename It::value_type&>;
+    using difference_type   = typename It::difference_type;
+    using reference         = value_type;
+    using pointer           = typename It::pointer;
 public:
-    const_enumerate_iterator(const T& object, int start) : m_object(object), m_num(start) {}
-    const_enumerate_iterator(T&& object, int start) : m_object(std::move(object)), m_num(start) {}
+    const_enumerate_iterator(It&& object, int start) : m_object(std::move(object)), m_num(start) {}
 
     reference operator*()
     {
@@ -96,22 +94,19 @@ public:
     }
 
 private:
-    T m_object;
+    It m_object;
     int m_num;
 };
 
-// move semantics
 template <typename T>
 class enumerate
 {
 public:
-    using iterator = enumerate_iterator<typename T::iterator>;
+    using iterator       = enumerate_iterator<typename T::iterator>;
     using const_iterator = const_enumerate_iterator<typename T::const_iterator>;
 public:
-    enumerate(const T& container) : m_container(container), m_start(0) {}
-    enumerate(const T& container, int start) : m_container(container), m_start(start) {}
-    enumerate(T&& container) : m_container(std::move(container)), m_start(0) {}
-    enumerate(T&& container, int start) : m_container(std::move(container)), m_start(start) {}
+    enumerate(T& container) : m_container(container), m_start(0) {}
+    enumerate(T& container, int start) : m_container(container), m_start(start) {}
 
     iterator begin()
     {
@@ -132,7 +127,7 @@ public:
     }
 
 private:
-    T m_container;
+    T& m_container;
     int m_start;
 };
 
