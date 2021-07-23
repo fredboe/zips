@@ -6,13 +6,18 @@
 #include <iterator>
 #include <utility>
 
+namespace zips
+{
+
 template <typename ... Its>
 class zip_iterator
 {
 public:
-    using iterator_category = std::forward_iterator_tag;
-    using value_type = std::tuple<typename Its::value_type ...>;
-    using reference = std::tuple<typename Its::value_type& ...>;
+    using iterator_category = std::common_type_t<typename std::iterator_traits<Its>::iterator_category...>;
+    using difference_type   = std::common_type_t<typename std::iterator_traits<Its>::difference_type...>;
+    using value_type        = std::tuple<typename std::iterator_traits<Its>::value_type ...>;
+    using pointer           = std::tuple<typename std::iterator_traits<Its>::pointer ...>;
+    using reference         = std::tuple<std::remove_reference_t<typename std::iterator_traits<Its>::reference>& ...>;
 
 public:
     zip_iterator(std::tuple<Its ...>&& p_iterators) : iterators(std::move(p_iterators)) {}
@@ -46,8 +51,8 @@ public:
 private:
     void inc_tup()
     {
-        //using N = std::tuple_size<decltype(iterators)>::value;
-        inc_tup_impl(std::make_index_sequence<std::tuple_size<decltype(iterators)>::value>{});
+        constexpr std::size_t N = std::tuple_size<decltype(iterators)>::value;
+        inc_tup_impl(std::make_index_sequence<N>{});
     }
     template <std::size_t ... Is>
     void inc_tup_impl(std::index_sequence<Is ...>)
@@ -58,8 +63,8 @@ private:
 
     bool eq_tup(const zip_iterator<Its ...>& other)
     {
-        //using N = std::tuple_size<decltype(iterators)>::value;
-        return eq_tup_impl(other, std::make_index_sequence<std::tuple_size<decltype(iterators)>::value>{});
+        constexpr std::size_t N = std::tuple_size<decltype(iterators)>::value;
+        return eq_tup_impl(other, std::make_index_sequence<N>{});
     }
     template <std::size_t ... Is>
     bool eq_tup_impl(const zip_iterator<Its ...>& other, std::index_sequence<Is ...>)
@@ -78,21 +83,23 @@ public:
     using iterator = zip_iterator<typename Objs::iterator ...>;
 
 public:
-    zip(Objs& ... p_objs) : objs(std::make_tuple(p_objs...)) {}
+    zip(Objs& ... p_objs) : objs(std::forward_as_tuple(p_objs...)) {}
 
     iterator begin()
     {
-        return iterator(std::apply([](auto& ... x) { return std::make_tuple(x.begin() ...); }, objs));
+        return iterator(std::apply([] (auto& ... x) { return std::make_tuple(x.begin() ...); }, objs));
     }
 
     iterator end()
     {
-        return iterator(std::apply([](auto& ... x) { return std::make_tuple(x.end() ...); }, objs));
+        return iterator(std::apply([] (auto& ... x) { return std::make_tuple(x.end() ...); }, objs));
     }
 
 private:
-    std::tuple<Objs...> objs;
+    std::tuple<Objs& ...> objs;
 };
+
+} // end namespace zips
 
 
 
