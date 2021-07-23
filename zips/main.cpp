@@ -21,6 +21,8 @@ int main()
     std::vector<double> vec1 = {1.2, 3.2, 1.5, 9.2, 0.0, 123.1};
     std::vector<int> vec2 = {1, 2, 5, 10, -1};
     std::list<int> lis3 = {0, 1, 0, 5};
+    
+    std::cout << std::endl;
 
     for (auto [i, elem] : enumerate(vec1))
     {

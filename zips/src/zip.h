@@ -5,6 +5,7 @@
 #include <tuple>
 #include <iterator>
 #include <utility>
+#include <list>
 
 namespace zips
 {
@@ -84,6 +85,14 @@ public:
 
 public:
     zip(Objs& ... p_objs) : objs(std::forward_as_tuple(p_objs...)) {}
+
+    decltype(auto) as_list()
+    {
+        std::list<typename iterator::value_type> result;
+        for (auto tup : *this)
+            result.push_back(tup);
+        return result;
+    }
 
     iterator begin()
     {
