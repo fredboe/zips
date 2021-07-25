@@ -46,11 +46,11 @@ public:
 
     bool operator==(const range_iterator& other)
     {
-        return m_val == other.m_val;
+        return m_val >= other.m_val;
     }
     bool operator!=(const range_iterator& other)
     {
-        return m_val != other.m_val;
+        return m_val < other.m_val;
     }
 
 private:
