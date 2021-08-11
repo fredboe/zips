@@ -61,7 +61,7 @@ private:
     int i;
 };
 
-}
+} // namespace zips
 
 
 #endif // enumerate_H
