@@ -15,16 +15,17 @@ void print_vec(const std::vector<T>& vec)
     std::cout << "]\n";
 }
 
+
 // keep in mind that structured bindings will return references
 int main()
 {
     std::vector<double> vec1 = {1.2, 3.2, 1.5, 9.2, 0.0, 123.1};
-    std::vector<int> vec2 = {1, 2, 5, 10, -1};
-    std::list<int> lis3 = {0, 1, 0, 5};
-    
+    std::vector<int> vec2    = {1, 2, 5, 10, -1};
+    std::list<int> lis3      = {0, 1, 0, 5};
+
     std::cout << std::endl;
 
-    for (auto [i, elem] : enumerate(vec1))
+    for (auto [i, elem] : enumerate(vec1, 3)) // start = 3
     {
         std::cout << i << " " << elem << std::endl;
     }
@@ -65,6 +66,13 @@ int main()
 }
 
 /* output:
+* 3 1.2
+* 4 3.2
+* 5 1.5
+* 6 9.2
+* 7 0
+* 8 123.1
+*
 * 0 1.2
 * 1 3.2
 * 2 1.5
@@ -72,11 +80,6 @@ int main()
 * 4 0
 * 5 123.1
 *
-* 0 1.2
-* 1 3.2
-* 2 1.5
-* 3 9.2
-* 4 0
 * 1.2 1 0
 * 3.2 2 1
 * 1.5 5 0
@@ -87,6 +90,6 @@ int main()
 * 2 5 0
 * 3 10 5
 *
-*   [ 1 1 1 1 1 123.1 ]
-*   [ 2 2 2 2 2 ]
+*  [ 1 1 1 1 1 123.1 ]
+*  [ 2 2 2 2 2 ]
 */
